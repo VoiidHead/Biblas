@@ -1,6 +1,6 @@
 # 📚 Biblas
 
-Sistema de gerenciamento de biblioteca escrito em Python, em **duas versões**: uma para o terminal e outra com interface gráfica feita em [Flet](https://flet.dev).
+Sistema de gerenciamento de biblioteca escrito em Python, em **duas versões**: uma para o terminal e outra com interface gráfica feita com [Flet](https://flet.dev).
 
 Este é um projeto pessoal de estudo, feito para praticar Python. Ele também é uma
 competição com o meu colega [Augusto](https://github.com/GUT-R/biblioteca).
@@ -18,7 +18,7 @@ Esse repostório possui duas versões diferentes do projeto, a versão inicial f
 |---|---|---|
 | Interface | Menu em linha de comando | Janela com barra lateral ou no navegador |
 | Dependências | Python 3.10+ | Python 3.10+<br>Flet 1.x|
-| Extras | — | Tema claro/escuro/sistema, validação e máscaras enquanto se digita, atalhos Ctrl+1 a Ctrl+5 |
+| Extras | — | Tema claro/escuro, validação e input masks enquanto se digita, atalhos de navegação |
 
 ## ✨ Funcionalidades
 
@@ -33,7 +33,7 @@ As duas versões fazem a mesma coisa:
 
 **Usuários**
 - Cadastro com nome de usuário, gênero, e-mail, CPF (com validação dos dígitos verificadores) e senha, que é guardada como hash (scrypt com sal), nunca em texto puro.
-- Nome, e-mail e CPF são únicos. As mensagens do sistema concordam com o gênero do usuário (suspensa/suspenso, banida/banido).
+- Nome, e-mail e CPF são únicos. As mensagens do sistema concordam com o gênero do usuário (suspenso(a), banido(a)).
 - Editar qualquer dado, quitar multas pendentes e zerar faltas.
 - Consultar a ficha completa, com histórico de empréstimos.
 
@@ -49,7 +49,7 @@ As duas versões fazem a mesma coisa:
 |---|---|
 | Prazo de devolução | 14 dias |
 | Máximo de empréstimos por usuário | 5 |
-| Punição por atraso | Suspensão (1 dia por dia de atraso, acumulativa) |
+| Punição por atraso | Suspensão (1 dia por dia de atraso, cumulativa) |
 | Valor da multa, se a punição for multa | R$ 1,00 por dia de atraso |
 | Banimento | Desativado |
 | Faltas para banir, se o banimento estiver ativo | 3 |
@@ -66,7 +66,7 @@ Na primeira gravação, cada versão cria a pasta `data/` ao lado da sua `module
 | `config.json` | Configurações |
 | `history.log` | Histórico de empréstimos (o conteúdo também é JSON) |
 
-Se algum arquivo estiver corrompido ou em formato antigo, ele não é apagado: é movido para `data/unreadable/` com a data e a hora no nome, e o programa continua com dados vazios para aquele arquivo. Na GUI, um aviso na abertura informa o que foi movido.
+Se algum arquivo estiver corrompido ou em formato antigo, ele não é apagado: é movido para `data/unreadable/` com a data e a hora no nome, e o programa continua com dados vazios para aquele arquivo.
 
 Para começar do zero, basta apagar a pasta `data/` da versão desejada.
 
