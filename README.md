@@ -7,7 +7,7 @@ competição com o meu colega [Augusto](https://github.com/GUT-R/biblioteca).
 
 Com ele dá para cadastrar livros e usuários, registrar empréstimos e devoluções,
 consultar o acervo e aplicar punições por atraso (suspensão ou multa). Os dados ficam
-salvos em arquivos JSON, então não há banco de dados.
+salvos em arquivos JSON.
 
 ## 🧭 As duas versões
 
