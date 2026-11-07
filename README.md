@@ -18,7 +18,7 @@ Esse repostório possui duas versões diferentes do projeto, a versão inicial f
 |---|---|---|
 | Interface | Menu em linha de comando | Janela com barra lateral ou no navegador |
 | Dependências | Python 3.10+ | Python 3.10+<br>Flet 1.x|
-| Extras | — | Tema claro/escuro, validação e input masks enquanto se digita, atalhos de navegação |
+| Extras | — | Tema claro/escuro, validação e *input masks* enquanto se digita, atalhos de navegação |
 
 ## ✨ Funcionalidades
 
@@ -32,7 +32,7 @@ As duas versões fazem a mesma coisa:
 - Ver o acervo completo em tabela, com exemplares disponíveis e emprestados.
 
 **Usuários**
-- Cadastro com nome de usuário, gênero, e-mail, CPF (com validação dos dígitos verificadores) e senha, que é guardada como hash (scrypt com sal), nunca em texto puro.
+- Cadastro com nome de usuário, gênero, e-mail, CPF (com validação dos dígitos verificadores) e senha, que é guardada como *hash* (*scrypt* com sal), nunca em texto puro.
 - Nome, e-mail e CPF são únicos. As mensagens do sistema concordam com o gênero do usuário (suspenso(a), banido(a)).
 - Editar qualquer dado, quitar multas pendentes e zerar faltas.
 - Consultar a ficha completa, com histórico de empréstimos.
@@ -62,7 +62,7 @@ Na primeira gravação, cada versão cria a pasta `data/` ao lado de `modules/`:
 | Arquivo | Conteúdo |
 |---|---|
 | `collection.json` | Títulos e exemplares |
-| `users.json` | Usuários (com o hash das senhas) |
+| `users.json` | Usuários (com o *hash* das senhas) |
 | `config.json` | Configurações |
 | `history.log` | Histórico de empréstimos (o conteúdo também é JSON) |
 
@@ -72,7 +72,7 @@ Para começar do zero, basta apagar a pasta `data/` da versão desejada.
 
 ## ⚠️ Limitações conhecidas
 
-Como é um projeto de estudo, algumas coisas são simplificadas de propósito:
+Como é um projeto de estudo, algumas coisas são simplificadas:
 
 - Os dados ficam em arquivos locais, e o programa não foi pensado para ser usado por várias pessoas ao mesmo tempo.
 - Não há testes automatizados.
