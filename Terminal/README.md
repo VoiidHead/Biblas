@@ -1,4 +1,4 @@
-# 📚 Biblas — versão Terminal
+# 📚 Biblas — versão do terminal
 
 Sistema de gerenciamento de biblioteca para o terminal, escrito em Python. Para a visão geral do projeto e as funcionalidades, veja o [README principal](../README.md).
 
@@ -8,7 +8,7 @@ Tudo funciona por um menu em linha de comando, e os dados ficam salvos em arquiv
 
 Python 3.10+
 
-A única biblioteca de terceiros, o [Tabulate](https://github.com/astanin/python-tabulate) (usado para desenhar as tabelas), já vem embutida em `modules/tabulate/`, então não precisa de `pip install`. O resto usa apenas a biblioteca padrão do Python (`json`, `hashlib`, `getpass`, `dataclasses`, `datetime`, entre outras).
+A única biblioteca de terceiros, o [Tabulate](https://github.com/astanin/python-tabulate) (usado para desenhar as tabelas), já vem embutida em [`modules/tabulate/`](modules/tabulate/), então não precisa de instalação com pip. O resto usa apenas a biblioteca padrão do Python (`json`, `hashlib`, `getpass`, `dataclasses`, `datetime`, entre outros).
 
 ## 🚀 Como executar
 
