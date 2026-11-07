@@ -22,7 +22,7 @@ Todo o resto usa apenas a biblioteca padrão do Python. As tabelas são desenhad
 A partir da pasta que contém o projeto:
 
 ```bash
-python GUI                   # abre uma janela do aplicativo
+python GUI                   # abre uma janela
 python GUI/main_browser.py   # abre no navegador, em http://localhost:8000
 ```
 
@@ -47,9 +47,9 @@ A janela tem uma barra lateral com cinco telas. Dá para navegar com o mouse ou 
 | `Ctrl+4` | Usuários | Lista, cadastro, edição, ficha com histórico, quitação de multas e zerar faltas |
 | `Ctrl+5` | Configurações | Prazo, limite, punição, multa, banimento e tema |
 
-Os formulários validam o que é digitado enquanto você escreve: o CPF e os valores em reais ganham máscara automaticamente, os campos numéricos só aceitam dígitos, e os erros aparecem logo abaixo de cada campo. Cada tela é montada de novo a cada navegação, então sempre mostra os dados atuais.
+Os formulários validam o que é digitado enquanto você escreve: o CPF e os valores em reais ganham *input masks* automaticamente, os campos numéricos só aceitam dígitos, e os erros aparecem logo abaixo de cada campo. Cada tela é montada de novo a cada navegação, então sempre mostra os dados atuais.
 
-Nas configurações, o tema pode ser *Sistema*, *Claro* ou *Escuro* (e é mostrado como prévia antes de salvar), e ao mexer no banimento o programa mostra quantos usuários seriam afetados.
+Nas configurações, o tema pode ser *Claro* ou *Escuro* (e é mostrado como prévia antes de salvar), e ao mexer no banimento, o programa mostra quantos usuários seriam afetados.
 
 ## 🗂️ Estrutura do projeto
 
@@ -88,10 +88,10 @@ GUI/
 O projeto é dividido em camadas, e a camada de entrada e saída é o pacote `ui/`:
 
 - **Interface** (`ui/`) desenha as telas e lê o que é digitado.
-- **Validação** (`masks`, `validators`) ajusta e confere o texto antes de ele chegar às regras.
-- **Regras** (`rules`) só calculam e decidem.
+- **Validação** (`masks.py`, `validators.py`) ajusta e confere o texto antes de ele chegar às regras.
+- **Regras** (`rules.py`) só calculam e decidem.
 - **Serviços** (`services/`) executam cada operação e **não** leem teclado nem imprimem: se algo estiver errado, levantam um `BiblasError`.
-- **Estado e armazenamento** (`state`, `storage`) cuidam dos dados.
+- **Estado e armazenamento** (`state.py`, `storage.py`) cuidam dos dados.
 
 ## 📖 Ordem de leitura
 
