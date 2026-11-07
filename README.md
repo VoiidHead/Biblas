@@ -57,7 +57,7 @@ As duas versões fazem a mesma coisa:
 
 ## 💾 Onde os dados ficam
 
-Na primeira gravação, cada versão cria a pasta `data/` ao lado da sua `modules/`:
+Na primeira gravação, cada versão cria a pasta `data/` ao lado de `modules/`:
 
 | Arquivo | Conteúdo |
 |---|---|
