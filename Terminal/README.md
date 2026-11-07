@@ -71,10 +71,10 @@ Terminal/
 
 A ideia foi separar as responsabilidades em camadas:
 
-- **Entrada e saída** (`inputs`, `menus`, `queries`) falam com o operador.
-- **Regras** (`rules`) só calculam e decidem, sem ler teclado nem gravar em disco.
+- **Entrada e saída** (`inputs.py`, `menus.py`, `queries.py`) falam com o operador.
+- **Regras** (`rules.py`) só calculam e decidem, sem ler teclado nem gravar em disco.
 - **Serviços** (`services/`) juntam tudo para executar cada operação. Eles também fazem as perguntas ao operador e imprimem as mensagens.
-- **Estado e armazenamento** (`state`, `storage`) cuidam dos dados.
+- **Estado e armazenamento** (`state.py`, `storage.py`) cuidam dos dados.
 
 ## 📖 Ordem de leitura
 
