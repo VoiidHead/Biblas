@@ -1,9 +1,3 @@
-"""Serviços de usuário: cadastro, edição, quitação de multas e zerar faltas.
-
-Os nomes de usuário são guardados em minúsculas e são únicos sem diferenciar
-acentos. CPF e e-mail também são únicos.
-"""
-
 from modules.inputs import read_cpf, read_email, read_gender, read_password, read_yes_no
 from modules.models import User, hash_password
 from modules.rules import by_gender, pending_fines
@@ -15,17 +9,6 @@ from modules.textutils import format_money
 
 
 def read_new_username(first: str):
-    """Lê um nome de usuário que ainda não esteja em uso.
-
-    Se o nome estiver vazio ou já existir, pergunta se o operador quer tentar
-    outro.
-
-    Args:
-        first: Primeiro nome tentado (já digitado pelo operador).
-
-    Returns:
-        O nome livre, em minúsculas, ou None se o operador cancelar.
-    """
     username = first.strip().casefold()
     while True:
         if not username:
@@ -42,21 +25,6 @@ def read_new_username(first: str):
 
 
 def read_unique(reader, finder, message: str, label: str, current: User | None = None):
-    """Lê um CPF ou e-mail até ser um valor ainda não cadastrado.
-
-    Se o valor já pertencer a outro usuário, pergunta se o operador quer tentar
-    outro.
-
-    Args:
-        reader: Função de leitura e validação (ex.: read_cpf, read_email).
-        finder: Função que procura o dono de um valor (ex.: find_user_by_cpf).
-        message: Pergunta exibida ao operador.
-        label: Nome do campo, usado na mensagem de duplicidade.
-        current: Usuário em edição, cujo próprio valor é permitido.
-
-    Returns:
-        O valor livre, ou None se o operador cancelar.
-    """
     while True:
         value = reader(message)
         owner = finder(value)
@@ -69,16 +37,6 @@ def read_unique(reader, finder, message: str, label: str, current: User | None =
 
 
 def add_user(username: str):
-    """Cadastra um novo usuário.
-
-    Valida o nome de usuário e pede, em sequência, gênero, e-mail, CPF e senha.
-    O e-mail e o CPF precisam ser únicos. Se o operador desistir em algum
-    passo, nada é cadastrado. A senha é guardada como hash. Grava os usuários
-    ao final.
-
-    Args:
-        username: Nome de usuário desejado.
-    """
     username = read_new_username(username)
     if username is None:
         return
@@ -97,21 +55,6 @@ def add_user(username: str):
 
 def edit_user(username: str, newUsername: str | None = None, gender: str | None = None,
               cpf: str | None = None, password: str | None = None, email: str | None = None):
-    """Altera dados de um usuário.
-
-    Só atualiza os campos informados (os que não forem None). Antes de mudar
-    qualquer coisa, confere se o usuário existe e se o novo nome, CPF ou e-mail
-    não pertencem a outro usuário; se algo falhar, nada é alterado. Assume
-    que gênero, CPF e e-mail já vêm validados por modules.inputs.
-
-    Args:
-        username: Nome atual do usuário.
-        newUsername: Novo nome de usuário.
-        gender: Nova chave de gênero.
-        cpf: Novo CPF, apenas com dígitos.
-        password: Nova senha (guardada como hash).
-        email: Novo e-mail.
-    """
     user = find_user_by_name(username.strip().casefold())
     if not user:
         print("Usuário não encontrado")
@@ -160,13 +103,6 @@ def edit_user(username: str, newUsername: str | None = None, gender: str | None 
 
 
 def pay_fines(user: User):
-    """Quita todas as multas pendentes de um usuário, após confirmação.
-
-    Lista as multas e o total antes de perguntar. Grava o histórico.
-
-    Args:
-        user: Usuário que está pagando.
-    """
     fines = pending_fines(user.id, loanHistory)
     if not fines:
         print("Nenhuma multa pendente")
@@ -186,11 +122,6 @@ def pay_fines(user: User):
 
 
 def reset_faults(user: User):
-    """Zera as faltas de um usuário, após confirmação, o que pode reabilitá-lo se estava banido.
-
-    Args:
-        user: Usuário a reabilitar.
-    """
     if user.faults == 0:
         print(f"{by_gender(user, 'A usuária', 'O usuário')} não tem faltas")
         return
@@ -204,10 +135,6 @@ def reset_faults(user: User):
 
 
 def edit_user_menu():
-    """Pergunta qual usuário e qual dado editar, e executa a edição.
-
-    Opções: nome, gênero, CPF, senha, e-mail, quitar multas pendentes e zerar faltas.
-    """
     username = input("Nome do usuário: ").strip().casefold()
     user = find_user_by_name(username)
     if not user:

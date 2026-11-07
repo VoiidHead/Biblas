@@ -1,0 +1,2 @@
+class BiblasError(Exception):
+    pass

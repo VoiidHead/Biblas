@@ -1,8 +1,3 @@
-"""Serviços de configuração: prazo, limite de empréstimos, punição por atraso e banimento.
-
-As alterações são feitas direto no dicionário config e gravadas em config.json.
-"""
-
 from modules.inputs import read_money, read_option, read_positive_int, read_positive_int_or_keep, read_yes_no
 from modules.rules import is_banned
 from modules.state import config, save_data, users
@@ -11,33 +6,12 @@ from modules.textutils import format_money
 
 
 def ban_impact(enabled: bool, limit: int):
-    """Calcula quantos usuários seriam afetados por uma mudança na regra de banimento.
-
-    Args:
-        enabled: Se o banimento ficaria ativado.
-        limit: Número de faltas que levaria ao banimento.
-
-    Returns:
-        Tupla (quantos passariam a ser banidos, quantos deixariam de ser).
-    """
     before = {user.id for user in users if is_banned(user, config)}
     after = {user.id for user in users if enabled and user.faults >= limit}
     return len(after - before), len(before - after)
 
 
 def apply_ban_settings(enabled: bool, limit: int):
-    """Aplica a nova regra de banimento, avisando antes quem será afetado.
-
-    Se a mudança altera o status de algum usuário, pede confirmação. Se o
-    operador recusar, nada é alterado. Se for aplicada, a configuração é gravada.
-
-    Args:
-        enabled: Se o banimento ficará ativado.
-        limit: Número de faltas que leva ao banimento.
-
-    Returns:
-        True se a mudança foi feita, False se foi cancelada.
-    """
     newlyBanned, released = ban_impact(enabled, limit)
     if newlyBanned:
         print(f"{newlyBanned} usuário(s) já têm {limit} falta(s) ou mais e passariam a ficar banidos agora.")
@@ -54,7 +28,6 @@ def apply_ban_settings(enabled: bool, limit: int):
 
 
 def enable_ban():
-    """Ativa o banimento, perguntando o número de faltas (Enter mantém o atual)."""
     current = config['ban_after_faults']
     limit = read_positive_int_or_keep(f"Número de faltas para banir (Enter mantém {current}): ", current)
     if apply_ban_settings(True, limit):
@@ -62,7 +35,6 @@ def enable_ban():
 
 
 def toggle_ban():
-    """Alterna o banimento: desativa se estiver ativo, ou inicia a ativação se estiver inativo."""
     if config['ban_enabled']:
         if apply_ban_settings(False, config['ban_after_faults']):
             print("Banimento desativado. As faltas continuam sendo contadas\n")
@@ -71,11 +43,6 @@ def toggle_ban():
 
 
 def change_ban_limit():
-    """Altera o número de faltas para banir.
-
-    Se o banimento estiver desativado, o limite não teria efeito, então
-    oferece ativá-lo primeiro.
-    """
     if not config['ban_enabled']:
         print("O número de faltas só vale quando o banimento está ativado.")
         if read_yes_no("Ativar o banimento agora? (s/n)\n"):
@@ -85,20 +52,11 @@ def change_ban_limit():
 
 
 def prompt_fine_value():
-    """Pergunta o valor da multa por dia de atraso (Enter mantém o atual).
-
-    Returns:
-        O valor em centavos.
-    """
     current = config['fine_per_day_cents']
     return read_money(f"Valor da multa por dia de atraso (Enter mantém {format_money(current)}): ", default=current)
 
 
 def choose_penalty():
-    """Deixa o operador escolher a punição por atraso: suspensão, multa ou cancelar.
-
-    Ao escolher multa, também pergunta o valor por dia. Grava a configuração.
-    """
     selection = read_option(
         "Punição por atraso:\n1 - Suspensão (1 dia de suspensão por dia de atraso)\n"
         "2 - Multa (valor por dia de atraso)\n3 - Cancelar\n", ("1", "2", "3"))
@@ -117,11 +75,6 @@ def choose_penalty():
 
 
 def change_fine_value():
-    """Altera o valor da multa por dia de atraso.
-
-    Se a punição ativa não for multa, o valor não teria efeito, então pergunta
-    se o operador quer mudar a punição para multa antes de continuar.
-    """
     if config['late_penalty'] != 'fine':
         print('O valor da multa só vale quando a punição por atraso é "multa".')
         if not read_yes_no("Mudar a punição para multa agora? (s/n)\n"):
@@ -133,14 +86,6 @@ def change_fine_value():
 
 
 def config_menu_text():
-    """Monta o texto do menu de configurações com os valores atuais.
-
-    Marca como inativas as opções que só valem quando outra está ligada (valor
-    da multa e faltas para banir).
-
-    Returns:
-        Texto do menu, com as opções de A a G.
-    """
     loanDays = config['loan_days']
     dayWord = "dias" if loanDays > 1 else "dia"
     isFine = config['late_penalty'] == 'fine'
@@ -161,11 +106,6 @@ def config_menu_text():
 
 
 def change_config():
-    """Mostra o menu de configurações em loop até o operador escolher voltar (G).
-
-    Cada opção (A a F) altera uma configuração e grava config.json. Opções
-    inválidas são ignoradas e o menu reaparece.
-    """
     while True:
         selection = input(config_menu_text()).strip().casefold()
         match selection:

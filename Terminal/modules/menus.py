@@ -1,10 +1,3 @@
-"""Menus do programa e as funções que ligam cada opção ao serviço correspondente.
-
-As funções read_* pedem ao operador os dados necessários e chamam o serviço
-que faz o trabalho. FULL_MENU e EMPTY_MENU mapeiam a tecla digitada para
-uma tupla (rótulo, ação, pausar depois?).
-"""
-
 from modules.inputs import read_natural_number, read_password, read_positive_int, read_text, read_year
 from modules.queries import book_query, collection_query, user_query, users_query
 from modules.services.books import add_book, remove_book
@@ -16,23 +9,19 @@ MENU_INDENT = " " * 16
 
 
 def read_borrow():
-    """Pede o ID do exemplar, o nome do usuário e a senha e registra o empréstimo."""
     borrow(read_natural_number("ID do exemplar: ", isID=True), input("Nome do Usuário: ").strip().casefold(),
            read_password("Senha: "))
 
 
 def read_give_back():
-    """Pede o ID do exemplar e registra a devolução."""
     give_back(read_natural_number("ID do exemplar: ", isID=True))
 
 
 def read_add_user():
-    """Pede o nome de usuário e inicia o cadastro de um novo usuário."""
     add_user(input("Nome de usuário: "))
 
 
 def read_add_book():
-    """Pede os dados do livro e a quantidade de exemplares e os adiciona ao acervo."""
     add_book(read_text("Nome do livro: "),
              read_text("Nome do autor: "),
              read_text("Nome da editora: "),
@@ -43,12 +32,10 @@ def read_add_book():
 
 
 def read_remove_book():
-    """Pede o ID de um exemplar e o remove do acervo."""
     remove_book(read_natural_number("ID do exemplar: ", isID=True))
 
 
 def read_user_query():
-    """Pede o nome de um usuário e mostra a ficha e o histórico dele."""
     user_query(input("Nome do usuário: ").strip().casefold())
 
 
@@ -79,14 +66,6 @@ EMPTY_MENU = {
 
 
 def menu_text(options: dict):
-    """Monta o texto do menu principal.
-
-    Args:
-        options: Dicionário de tecla para tupla (rótulo, ação, pausar).
-
-    Returns:
-        Texto com uma linha por opção, mais a opção '/' para fechar o programa.
-    """
     lines = [f"{MENU_INDENT}{key} - {label}" for key, (label, _, _) in options.items()]
     lines.append(f"{MENU_INDENT}/ - Fechar o programa")
     return "\n" + "\n".join(lines) + "\n" + MENU_INDENT + "\n"

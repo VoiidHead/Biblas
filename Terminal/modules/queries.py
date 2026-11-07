@@ -1,9 +1,3 @@
-"""Consultas e relatórios exibidos na tela: acervo, busca de livros e usuários.
-
-Nada aqui altera o estado do sistema. As tabelas são desenhadas com o
-módulo tabulate.
-"""
-
 from datetime import date
 
 from modules.inputs import read_natural_number
@@ -29,23 +23,10 @@ HISTORY_MAX_WIDTHS = [None, 14, None, None, 22, None]
 
 
 def year_text(year: int):
-    """Formata um ano para exibição.
-
-    Returns:
-        O ano, com ' AEC' no final se for negativo (ex.: -300 vira '300 AEC').
-    """
     return f"{abs(year)} AEC" if year < 0 else str(year)
 
 
 def late_text(loan):
-    """Descreve o atraso de um empréstimo.
-
-    Args:
-        loan: Empréstimo a analisar.
-
-    Returns:
-        Texto como '1 dia' ou '3 dias', ou texto vazio se não há atraso.
-    """
     lateDays = days_late(loan)
     if not lateDays:
         return ""
@@ -54,15 +35,6 @@ def late_text(loan):
 
 
 def copy_row(copy):
-    """Monta a linha de tabela de um exemplar.
-
-    Args:
-        copy: Exemplar a descrever.
-
-    Returns:
-        Lista [ID, situação, mutuário, data máxima, atraso]. Para exemplar
-        disponível, os campos depois da situação ficam vazios.
-    """
     loan = active_loan(copy)
     if not loan:
         return [copy.id, "disponível", "", "", ""]
@@ -71,15 +43,6 @@ def copy_row(copy):
 
 
 def title_row(title):
-    """Monta a linha de tabela de um título.
-
-    Args:
-        title: Título a descrever.
-
-    Returns:
-        Lista com nome, autor, editora, gênero, páginas, ano, IDs dos exemplares
-        disponíveis e exemplares emprestados (um por linha, com o nome do mutuário).
-    """
     availableIds = []
     borrowedCopies = []
     for copy in copies_of(title):
@@ -93,11 +56,6 @@ def title_row(title):
 
 
 def show_titles(titleList):
-    """Imprime uma tabela com os títulos informados.
-
-    Args:
-        titleList: Títulos a exibir.
-    """
     headers = ["Nome", "Autor", "Editora", "Gênero", "Páginas", "Ano", "Disponíveis", "Emprestados"]
     rows = [title_row(title) for title in titleList]
     print(tabulate(rows, headers=headers, tablefmt="grid", disable_numparse=True, maxcolwidths=TITLES_MAX_WIDTHS))
@@ -105,11 +63,6 @@ def show_titles(titleList):
 
 
 def show_title(title):
-    """Imprime os detalhes de um título e a situação de cada exemplar.
-
-    Args:
-        title: Título a exibir.
-    """
     titleCopies = copies_of(title)
     availableCount = sum(1 for copy in titleCopies if not active_loan(copy))
     details = [
@@ -129,11 +82,6 @@ def show_title(title):
 
 
 def show_title_history(title):
-    """Imprime o histórico de empréstimos de um título, do mais recente ao mais antigo.
-
-    Args:
-        title: Título a consultar.
-    """
     titleLoans = [loan for loan in loanHistory if loan.title_id == title.id]
     print("Histórico de empréstimos:")
     if not titleLoans:
@@ -151,17 +99,6 @@ def show_title_history(title):
 
 
 def title_matches(title, filters: dict):
-    """Indica se um título atende a todos os filtros de busca.
-
-    Args:
-        title: Título a testar.
-        filters: Dicionário de atributo para valor buscado. A chave 'id' casa
-            se algum exemplar do título tiver esse ID. As demais casam se o
-            valor estiver contido no atributo, ignorando acentos e maiúsculas.
-
-    Returns:
-        True se todos os filtros casarem.
-    """
     for attribute, value in filters.items():
         if attribute == "id":
             if not any(copy.id == value for copy in copies_of(title)):
@@ -172,19 +109,11 @@ def title_matches(title, filters: dict):
 
 
 def collection_query():
-    """Imprime o acervo completo."""
     print("Acervo:")
     show_titles(titles)
 
 
 def book_query():
-    """Busca livros por um ou mais parâmetros escolhidos pelo operador.
-
-    Pergunta por quais campos buscar (letras de SEARCH_OPTIONS, combináveis),
-    lê os valores e aplica todos os filtros ao mesmo tempo. Se achar um único
-    título, mostra detalhes e histórico; se achar vários, mostra a tabela e
-    sugere refinar a busca.
-    """
     optionsText = "\n".join(f"{letter.upper()} - {label}" for letter, (label, attribute) in SEARCH_OPTIONS.items())
     answer = input(f"Buscar por quais parâmetros? Digite as letras, por exemplo BC:\n{optionsText}\n").casefold()
     chosen = list(dict.fromkeys(char for char in answer if char not in " ,;"))
@@ -215,11 +144,6 @@ def book_query():
 
 
 def users_query():
-    """Imprime uma linha por usuário cadastrado.
-
-    Cada linha resume os livros emprestados e atrasados, suspensão, banimento
-    e multas pendentes, com a flexão de gênero adequada.
-    """
     if users:
         for user in users:
             activeLoans = [loan for loan in loanHistory if loan.user_id == user.id and loan.return_date is None]
@@ -258,14 +182,6 @@ def users_query():
 
 
 def user_query(username: str):
-    """Imprime a ficha completa de um usuário e o histórico de empréstimos dele.
-
-    Mostra gênero, e-mail, CPF formatado, suspensão, faltas, banimento e multas
-    pendentes. A senha não é exibida. O histórico vai do mais recente ao mais antigo.
-
-    Args:
-        username: Nome do usuário a consultar.
-    """
     user = find_user_by_name(username)
     if not user:
         print("Usuário não encontrado")

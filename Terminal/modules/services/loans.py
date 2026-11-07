@@ -1,5 +1,3 @@
-"""Serviços de empréstimo: retirada e devolução de exemplares, com as punições por atraso."""
-
 from datetime import date, timedelta
 
 from modules.models import Loan
@@ -12,22 +10,6 @@ from modules.textutils import format_money
 
 
 def close_loan(loan: Loan, wasRemoved: bool = False):
-    """Encerra um empréstimo e aplica a punição por atraso, se houver.
-
-    Marca a data de devolução como hoje. Se estava atrasado, conta uma falta
-    para o usuário e aplica a punição configurada (multa ou suspensão), avisando
-    na tela inclusive quando a falta leva ao banimento. Não grava em disco:
-    quem chama deve passar o resultado para save_data.
-
-    Args:
-        loan: Empréstimo a encerrar.
-        wasRemoved: True se o encerramento é causado pela remoção do exemplar
-            do acervo, e não por uma devolução.
-
-    Returns:
-        Lista dos arquivos alterados: sempre o histórico e, se houve punição,
-        também o de usuários.
-    """
     loan.return_date = date.today().isoformat()
     loan.was_removed = wasRemoved
     lateDays = days_late(loan)
@@ -59,19 +41,6 @@ def close_loan(loan: Loan, wasRemoved: bool = False):
 
 
 def borrow(copyId: int, username: str, password: str):
-    """Registra o empréstimo de um exemplar a um usuário.
-
-    Verifica, nesta ordem: se o usuário existe, se a senha confere, se não
-    está banido nem suspenso, se não tem livro atrasado, se não atingiu o
-    limite de empréstimos, se o exemplar existe e se está disponível. Ao
-    primeiro problema, avisa na tela e não registra nada. Se tudo estiver
-    certo, grava o empréstimo com prazo de loan_days e mostra a data máxima.
-
-    Args:
-        copyId: ID do exemplar.
-        username: Nome do usuário.
-        password: Senha do usuário.
-    """
     user = find_user_by_name(username)
     if not user:
         print("Usuário não encontrado")
@@ -125,14 +94,6 @@ def borrow(copyId: int, username: str, password: str):
 
 
 def give_back(copyId: int):
-    """Registra a devolução de um exemplar.
-
-    Avisa na tela se o exemplar não existe ou não estava emprestado. Caso
-    contrário encerra o empréstimo (com punição, se atrasado) e grava.
-
-    Args:
-        copyId: ID do exemplar devolvido.
-    """
     copy = find_copy(copyId)
     if not copy:
         print("Livro não encontrado\n")
